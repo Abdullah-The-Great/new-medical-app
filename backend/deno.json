@@ -1,0 +1,13 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env --watch main.ts",
+    "start": "deno run --allow-net --allow-env main.ts",
+    "test": "deno test --allow-net --allow-env"
+  },
+  "imports": {
+    "hono": "jsr:@hono/hono@^4.6.0",
+    "@aws-sdk/client-dynamodb": "npm:@aws-sdk/client-dynamodb@^3.600.0",
+    "@aws-sdk/lib-dynamodb": "npm:@aws-sdk/lib-dynamodb@^3.600.0",
+    "aws-jwt-verify": "npm:aws-jwt-verify@^4.0.1"
+  }
+}

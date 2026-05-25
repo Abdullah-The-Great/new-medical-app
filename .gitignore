@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+frontend/dist/
+
+# Env files — NEVER commit these (they hold AWS/Cognito IDs)
+.env
+.env.*
+!.env.example
+
+# Terraform — state can contain secrets; never commit it
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/.terraform.lock.hcl
+
+# AWS / local
+.aws/
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+
+# Deno
+deno.lock
