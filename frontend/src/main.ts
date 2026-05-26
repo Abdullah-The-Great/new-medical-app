@@ -1,5 +1,6 @@
 import "./style.css";
 import { renderLogin } from "./screens/login.ts";
+import { renderSignup } from "./screens/signup.ts";
 import { renderMenu } from "./screens/menu.ts";
 import { renderAddObservation } from "./screens/addObservation.ts";
 import { renderViewRecords } from "./screens/viewRecords.ts";
@@ -19,17 +20,28 @@ function showLogin() {
   renderLogin(
     app,
     () => {
-      // cloud login succeeded
       isGuest = false;
       storage = new CloudStorage(config.apiBase, getToken);
       showMenu();
     },
     () => {
-      // guest mode chosen
       isGuest = true;
       storage = new LocalStorage();
       showMenu();
     },
+    showSignup,
+  );
+}
+
+function showSignup() {
+  renderSignup(
+    app,
+    () => {
+      isGuest = false;
+      storage = new CloudStorage(config.apiBase, getToken);
+      showMenu();
+    },
+    showLogin,
   );
 }
 

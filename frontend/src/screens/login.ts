@@ -1,10 +1,11 @@
-import { signIn, signUp } from "../auth.ts";
+import { signIn } from "../auth.ts";
 import { cloudAvailable } from "../config.ts";
 
 export function renderLogin(
   app: HTMLElement,
   onCloud: (token: string) => void,
   onGuest: () => void,
+  onSignup: () => void,
 ) {
   const cloud = cloudAvailable();
 
@@ -12,7 +13,6 @@ export function renderLogin(
     <div class="card">
       <h1>🌿 Patient Records</h1>
       <p class="subtitle">Track your health observations, your way.</p>
-
       ${
         cloud
           ? `
@@ -57,15 +57,8 @@ export function renderLogin(
       }
     });
 
-    app.querySelector("#signup")?.addEventListener("click", async () => {
-      err.textContent = "";
-      try {
-        await signUp(email(), pass());
-        err.textContent =
-          "Account created — check your email to confirm, then log in.";
-      } catch (e) {
-        err.textContent = (e as Error).message;
-      }
-    });
+    // Navigate to the dedicated sign-up screen (which handles the email
+    // confirmation code step).
+    app.querySelector("#signup")?.addEventListener("click", onSignup);
   }
 }
