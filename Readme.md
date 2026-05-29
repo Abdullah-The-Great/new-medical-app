@@ -259,3 +259,4 @@ token.)
 ```
 
 See `ARCHITECTURE.md` for how the pieces fit together.
+[MIT](LICENSE) — see also the [disclaimer](#-disclaimer) above.
