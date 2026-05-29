@@ -36,6 +36,10 @@ export function renderLogin(
         <button class="btn-primary" id="guest">Start using the app →</button>
       `
       }
+      <p class="subtitle" style="font-size:.75rem;margin-top:18px;line-height:1.4;color:var(--ink-soft);text-align:center">
+  This is a personal log, not medical advice.
+  Always consult a healthcare professional for medical decisions.
+</p>
     </div>
   `;
 
