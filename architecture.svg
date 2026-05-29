@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="360" viewBox="0 0 680 360" font-family="system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Browser zone -->
+  <rect x="20" y="20" width="300" height="320" rx="14" fill="#f7f3ea" stroke="#cfc8b8" stroke-width="1"/>
+  <text x="36" y="44" font-size="13" font-weight="600" fill="#5c6b62">BROWSER</text>
+
+  <!-- AWS zone -->
+  <rect x="360" y="20" width="300" height="320" rx="14" fill="#eef5ee" stroke="#bcd4bc" stroke-width="1"/>
+  <text x="376" y="44" font-size="13" font-weight="600" fill="#3b6d4a">AWS · us-east-1</text>
+
+  <!-- Frontend -->
+  <rect x="44" y="64" width="252" height="52" rx="8" fill="#eeedfe" stroke="#7f77dd" stroke-width="1"/>
+  <text x="170" y="86" text-anchor="middle" font-size="14" font-weight="600" fill="#26215c">Vite frontend</text>
+  <text x="170" y="104" text-anchor="middle" font-size="12" fill="#534ab7">TypeScript, green floating UI</text>
+
+  <!-- IndexedDB -->
+  <rect x="44" y="240" width="252" height="52" rx="8" fill="#e1f5ee" stroke="#1d9e75" stroke-width="1"/>
+  <text x="170" y="262" text-anchor="middle" font-size="14" font-weight="600" fill="#04342c">Guest: IndexedDB</text>
+  <text x="170" y="280" text-anchor="middle" font-size="12" fill="#0f6e56">On-device, no AWS</text>
+
+  <!-- Cognito -->
+  <rect x="384" y="64" width="252" height="52" rx="8" fill="#faeeda" stroke="#ba7517" stroke-width="1"/>
+  <text x="510" y="86" text-anchor="middle" font-size="14" font-weight="600" fill="#412402">Cognito user pool</text>
+  <text x="510" y="104" text-anchor="middle" font-size="12" fill="#854f0b">Signup, confirm, login token</text>
+
+  <!-- Deno API -->
+  <rect x="384" y="152" width="252" height="52" rx="8" fill="#e6f1fb" stroke="#185fa5" stroke-width="1"/>
+  <text x="510" y="174" text-anchor="middle" font-size="14" font-weight="600" fill="#042c53">Deno + Hono API</text>
+  <text x="510" y="192" text-anchor="middle" font-size="12" fill="#185fa5">Verifies token, scopes data</text>
+
+  <!-- DynamoDB -->
+  <rect x="384" y="240" width="252" height="52" rx="8" fill="#e6f1fb" stroke="#185fa5" stroke-width="1"/>
+  <text x="510" y="262" text-anchor="middle" font-size="14" font-weight="600" fill="#042c53">DynamoDB table</text>
+  <text x="510" y="280" text-anchor="middle" font-size="12" fill="#185fa5">Observations by patient id</text>
+
+  <!-- guest path -->
+  <text x="60" y="180" font-size="12" fill="#0f6e56">guest path</text>
+  <line x1="120" y1="116" x2="120" y2="238" stroke="#1d9e75" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- login -->
+  <text x="330" y="82" font-size="12" fill="#854f0b">login</text>
+  <line x1="296" y1="90" x2="382" y2="90" stroke="#ba7517" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- token + request -->
+  <text x="320" y="172" font-size="12" fill="#185fa5">token + request</text>
+  <line x1="220" y1="116" x2="220" y2="178" stroke="#534ab7" stroke-width="1.5"/>
+  <line x1="220" y1="178" x2="382" y2="178" stroke="#185fa5" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- API to dynamo -->
+  <line x1="510" y1="204" x2="510" y2="238" stroke="#185fa5" stroke-width="1.5" marker-end="url(#arrow)"/>
+</svg>
