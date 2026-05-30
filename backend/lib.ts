@@ -1,5 +1,3 @@
-// Pure helpers extracted so they can be unit-tested without AWS.
-
 export interface NewObservationInput {
   name: string;
   category: string;
@@ -7,7 +5,6 @@ export interface NewObservationInput {
   amount: string;
 }
 
-// Returns the bearer token from an Authorization header, or null.
 export function extractBearer(
   header: string | undefined | null,
 ): string | null {
@@ -15,7 +12,6 @@ export function extractBearer(
   return header.startsWith("Bearer ") ? header.slice(7) : null;
 }
 
-// Validates a POST body. Returns the cleaned input, or an error message.
 export function validateObservation(
   body: unknown,
 ): { ok: true; value: NewObservationInput } | { ok: false; error: string } {
@@ -38,7 +34,6 @@ export function validateObservation(
   };
 }
 
-// Builds the DynamoDB item for an observation (id + timestamp added here).
 export function buildObservationItem(
   patientId: string,
   input: NewObservationInput,

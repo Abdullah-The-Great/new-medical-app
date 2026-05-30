@@ -14,7 +14,6 @@ import {
   buildObservationItem,
 } from "./lib.ts";
 
-// ---------- config ----------
 const REGION = Deno.env.get("AWS_REGION") ?? "us-east-1";
 const TABLE = Deno.env.get("DYNAMODB_TABLE")!;
 const POOL_ID = Deno.env.get("COGNITO_USER_POOL_ID")!;
@@ -22,7 +21,6 @@ const CLIENT_ID = Deno.env.get("COGNITO_CLIENT_ID")!;
 const PORT = Number(Deno.env.get("PORT") ?? "8000");
 const ORIGIN = Deno.env.get("CORS_ORIGIN") ?? "http://localhost:5173";
 
-// Fail fast with a friendly message if cloud config is missing.
 if (!POOL_ID || !CLIENT_ID || !TABLE) {
   console.error(
     "\n❌ Missing AWS config. The backend only runs in cloud mode.\n" +
@@ -34,7 +32,6 @@ if (!POOL_ID || !CLIENT_ID || !TABLE) {
   Deno.exit(1);
 }
 
-// ---------- AWS clients ----------
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: REGION }));
 
 const verifier = CognitoJwtVerifier.create({
@@ -43,7 +40,6 @@ const verifier = CognitoJwtVerifier.create({
   clientId: CLIENT_ID,
 });
 
-// ---------- app ----------
 type Variables = { patientId: string };
 
 const app = new Hono<{ Variables: Variables }>();
@@ -52,7 +48,6 @@ app.use(
   cors({ origin: ORIGIN, allowHeaders: ["Content-Type", "Authorization"] }),
 );
 
-// Auth middleware: verify the Bearer token, stash the patientId (Cognito sub).
 async function authMiddleware(
   c: Context<{ Variables: Variables }>,
   next: Next,
@@ -70,8 +65,6 @@ async function authMiddleware(
 
 app.use("/observations/*", authMiddleware);
 app.use("/observations", authMiddleware);
-
-// ---------- routes ----------
 
 app.get("/observations", async (c) => {
   const patientId = c.get("patientId");

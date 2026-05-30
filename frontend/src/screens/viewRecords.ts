@@ -58,7 +58,7 @@ export function renderViewRecords(
     list.querySelectorAll<HTMLButtonElement>("[data-del]").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const id = btn.dataset.del!;
-        if (!confirm("Delete this record? This can't be undone.")) return; // confirm dialog
+        if (!confirm("Delete this record? This can't be undone.")) return;
         await storage.remove(id);
         load();
       });

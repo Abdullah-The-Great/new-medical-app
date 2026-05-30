@@ -1,36 +1,30 @@
-import { signUp, confirmSignUp, resendCode, signIn } from "../auth.ts";
+import { forgotPassword, confirmForgotPassword, signIn } from "../auth.ts";
 
-export function renderSignup(
+export function renderForgotPassword(
   app: HTMLElement,
-  onConfirmed: (token: string) => void,
+  onReset: (token: string) => void,
   onBackToLogin: () => void,
 ) {
-  let stage: "form" | "confirm" = "form";
+  let stage: "request" | "confirm" = "request";
   let savedEmail = "";
-  let savedPassword = "";
 
   function render() {
-    if (stage === "form") {
+    if (stage === "request") {
       app.innerHTML = `
         <div class="card">
-          <h1>🌿 Create account</h1>
-          <p class="subtitle">We'll email you a code to confirm.</p>
+          <h1>🔐 Reset password</h1>
+          <p class="subtitle">We'll email you a code to reset it.</p>
           <label>Email</label>
           <input id="email" type="email" autocomplete="username" />
-          <label>Password</label>
-          <input id="password" type="password" autocomplete="new-password" />
-          <p class="subtitle" style="margin-top:8px;font-size:.8rem">
-            At least 8 characters, with upper, lower and a number.
-          </p>
           <div class="error" id="err"></div>
-          <button class="btn-primary" id="create">Create account</button>
+          <button class="btn-primary" id="send">Send reset code</button>
           <p style="text-align:center;margin-top:18px">
             <span class="muted-link" id="back">← Back to login</span>
           </p>
         </div>
       `;
       app.querySelector("#back")?.addEventListener("click", onBackToLogin);
-      app.querySelector("#create")?.addEventListener("click", handleCreate);
+      app.querySelector("#send")?.addEventListener("click", handleSend);
     } else {
       app.innerHTML = `
         <div class="card">
@@ -38,8 +32,13 @@ export function renderSignup(
           <p class="subtitle">We sent a 6-digit code to <strong>${savedEmail}</strong>.</p>
           <label>Confirmation code</label>
           <input id="code" inputmode="numeric" placeholder="123456" />
+          <label>New password</label>
+          <input id="password" type="password" autocomplete="new-password" />
+          <p class="subtitle" style="margin-top:8px;font-size:.8rem">
+            At least 8 characters, with upper, lower and a number.
+          </p>
           <div class="error" id="err"></div>
-          <button class="btn-primary" id="confirm">Confirm & log in</button>
+          <button class="btn-primary" id="confirm">Set new password & log in</button>
           <p style="text-align:center;margin-top:14px">
             <span class="muted-link" id="resend">Resend code</span>
           </p>
@@ -50,17 +49,16 @@ export function renderSignup(
     }
   }
 
-  async function handleCreate() {
+  async function handleSend() {
     const err = app.querySelector<HTMLDivElement>("#err")!;
     err.textContent = "";
     savedEmail = app.querySelector<HTMLInputElement>("#email")!.value.trim();
-    savedPassword = app.querySelector<HTMLInputElement>("#password")!.value;
-    if (!savedEmail || !savedPassword) {
-      err.textContent = "Please enter an email and password.";
+    if (!savedEmail) {
+      err.textContent = "Please enter your email.";
       return;
     }
     try {
-      await signUp(savedEmail, savedPassword);
+      await forgotPassword(savedEmail);
       stage = "confirm";
       render();
     } catch (e) {
@@ -72,14 +70,16 @@ export function renderSignup(
     const err = app.querySelector<HTMLDivElement>("#err")!;
     err.textContent = "";
     const code = app.querySelector<HTMLInputElement>("#code")!.value.trim();
-    if (!code) {
-      err.textContent = "Enter the code from your email.";
+    const newPassword = app.querySelector<HTMLInputElement>("#password")!.value;
+    if (!code || !newPassword) {
+      err.textContent = "Enter the code and a new password.";
       return;
     }
     try {
-      await confirmSignUp(savedEmail, code);
-      const token = await signIn(savedEmail, savedPassword);
-      onConfirmed(token);
+      await confirmForgotPassword(savedEmail, code, newPassword);
+      // Auto-log-in with the new password.
+      const token = await signIn(savedEmail, newPassword);
+      onReset(token);
     } catch (e) {
       err.textContent = (e as Error).message;
     }
@@ -89,7 +89,7 @@ export function renderSignup(
     const err = app.querySelector<HTMLDivElement>("#err")!;
     err.textContent = "";
     try {
-      await resendCode(savedEmail);
+      await forgotPassword(savedEmail);
       err.textContent = "A new code is on its way.";
     } catch (e) {
       err.textContent = (e as Error).message;

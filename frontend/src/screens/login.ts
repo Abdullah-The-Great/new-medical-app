@@ -6,6 +6,7 @@ export function renderLogin(
   onCloud: (token: string) => void,
   onGuest: () => void,
   onSignup: () => void,
+  onForgot: () => void,
 ) {
   const cloud = cloudAvailable();
 
@@ -21,8 +22,11 @@ export function renderLogin(
         <label>Password</label>
         <input id="password" type="password" autocomplete="current-password" />
         <div class="error" id="err"></div>
-        <button class="btn-primary" id="signin">Log in</button>
-        <p style="text-align:center;margin:10px 0;color:var(--ink-soft)">— or —</p>
+       <button class="btn-primary" id="signin">Log in</button>
+<p style="text-align:center;margin:8px 0 4px">
+  <span class="muted-link" id="forgot">Forgot password?</span>
+</p>
+<p style="text-align:center;margin:10px 0;color:var(--ink-soft)">— or —</p>
         <button class="btn-ghost" id="signup">Create account</button>
         <p style="text-align:center;margin-top:18px">
           <span class="muted-link" id="guest">Continue without an account →</span>
@@ -40,6 +44,7 @@ export function renderLogin(
   This is a personal log, not medical advice.
   Always consult a healthcare professional for medical decisions.
 </p>
+
     </div>
   `;
 
@@ -50,6 +55,7 @@ export function renderLogin(
     const email = () =>
       app.querySelector<HTMLInputElement>("#email")!.value.trim();
     const pass = () => app.querySelector<HTMLInputElement>("#password")!.value;
+    app.querySelector("#forgot")?.addEventListener("click", onForgot);
 
     app.querySelector("#signin")?.addEventListener("click", async () => {
       err.textContent = "";
@@ -61,8 +67,6 @@ export function renderLogin(
       }
     });
 
-    // Navigate to the dedicated sign-up screen (which handles the email
-    // confirmation code step).
     app.querySelector("#signup")?.addEventListener("click", onSignup);
   }
 }

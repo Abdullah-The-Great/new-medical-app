@@ -4,6 +4,8 @@ import {
   SignUpCommand,
   ConfirmSignUpCommand,
   ResendConfirmationCodeCommand,
+  ForgotPasswordCommand,
+  ConfirmForgotPasswordCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { config } from "./config.ts";
 
@@ -11,8 +13,6 @@ function client() {
   return new CognitoIdentityProviderClient({ region: config.region });
 }
 
-// In-memory token holder. (For a demo we keep it simple; production apps
-// would handle refresh tokens and secure persistence.)
 let idToken: string | null = null;
 export function getToken(): string | null {
   return idToken;
@@ -46,7 +46,6 @@ export async function signUp(email: string, password: string): Promise<void> {
   );
 }
 
-// Confirm a newly signed-up user with the code Cognito emailed them.
 export async function confirmSignUp(
   email: string,
   code: string,
@@ -60,7 +59,30 @@ export async function confirmSignUp(
   );
 }
 
-// Resend the confirmation code if it expired or didn't arrive.
+export async function forgotPassword(email: string): Promise<void> {
+  await client().send(
+    new ForgotPasswordCommand({
+      ClientId: config.clientId!,
+      Username: email,
+    }),
+  );
+}
+
+// Step 2 of password reset — verify the code and set the new password.
+export async function confirmForgotPassword(
+  email: string,
+  code: string,
+  newPassword: string,
+): Promise<void> {
+  await client().send(
+    new ConfirmForgotPasswordCommand({
+      ClientId: config.clientId!,
+      Username: email,
+      ConfirmationCode: code,
+      Password: newPassword,
+    }),
+  );
+}
 export async function resendCode(email: string): Promise<void> {
   await client().send(
     new ResendConfirmationCodeCommand({

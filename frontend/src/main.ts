@@ -1,6 +1,7 @@
 import "./style.css";
 import { renderLogin } from "./screens/login.ts";
 import { renderSignup } from "./screens/signup.ts";
+import { renderForgotPassword } from "./screens/forgotPassword.ts";
 import { renderMenu } from "./screens/menu.ts";
 import { renderAddObservation } from "./screens/addObservation.ts";
 import { renderViewRecords } from "./screens/viewRecords.ts";
@@ -30,11 +31,24 @@ function showLogin() {
       showMenu();
     },
     showSignup,
+    showForgotPassword,
   );
 }
 
 function showSignup() {
   renderSignup(
+    app,
+    () => {
+      isGuest = false;
+      storage = new CloudStorage(config.apiBase, getToken);
+      showMenu();
+    },
+    showLogin,
+  );
+}
+
+function showForgotPassword() {
+  renderForgotPassword(
     app,
     () => {
       isGuest = false;

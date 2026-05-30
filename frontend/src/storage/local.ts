@@ -9,7 +9,6 @@ interface PatientDB extends DBSchema {
   };
 }
 
-// A stable per-device id so guest records have an "owner" without an account.
 function getLocalPatientId(): string {
   const KEY = "local-patient-id";
   let id = localStorage.getItem(KEY);
@@ -24,7 +23,6 @@ export class LocalStorage implements Storage {
   private dbPromise: Promise<IDBPDatabase<PatientDB>>;
   private patientId = getLocalPatientId();
 
-  // dbName is parameterized so tests can use a fresh DB each run.
   constructor(dbName = "patient-records") {
     this.dbPromise = openDB<PatientDB>(dbName, 1, {
       upgrade(db) {

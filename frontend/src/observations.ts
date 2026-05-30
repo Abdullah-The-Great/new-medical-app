@@ -1,11 +1,8 @@
-// The system's known observation types. Units are predefined here ("the units
-// will be in the system and the system will show the unit"). When a type has
-// more than one unit, the Add screen shows a dropdown; otherwise it's fixed.
 export interface ObservationType {
   name: string;
   category: string;
-  units: string[]; // first entry is the default
-  placeholder?: string; // hint for the amount field
+  units: string[];
+  placeholder?: string;
 }
 
 export const OBSERVATION_TYPES: ObservationType[] = [
